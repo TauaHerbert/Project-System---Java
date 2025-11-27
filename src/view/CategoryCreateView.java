@@ -21,6 +21,10 @@ import daoLibrary.CategoryDAO;
 import modelsLibrary.Category;
 
 import javax.swing.JTextArea;
+import javax.swing.SwingConstants;
+import javax.swing.text.AbstractDocument;
+
+import Utils.CharacterLimitFilter;
 
 
 public class CategoryCreateView extends JFrame {
@@ -71,8 +75,9 @@ public class CategoryCreateView extends JFrame {
 		contentPane.setLayout(null);
 		
 		JLabel jlabelTitulo = new JLabel("Cadastro de Categorias dos Produtos");
-		jlabelTitulo.setFont(new Font("Arial", Font.BOLD, 20));
-		jlabelTitulo.setBounds(440, 143, 373, 32);
+		jlabelTitulo.setHorizontalAlignment(SwingConstants.CENTER);
+		jlabelTitulo.setFont(new Font("Arial Black", Font.BOLD, 30));
+		jlabelTitulo.setBounds(367, 143, 666, 43);
 		jlabelTitulo.setBackground(new Color(240, 240, 240));
 		contentPane.add(jlabelTitulo);
 		
@@ -91,29 +96,37 @@ public class CategoryCreateView extends JFrame {
 		});
 		
 		jtxtNome = new JTextField();
-		jtxtNome.setBounds(543, 275, 226, 20);
+		jtxtNome.setFont(new Font("Arial", Font.PLAIN, 17));
+		jtxtNome.setBounds(444, 291, 246, 30);
+		jtxtNome.setBorder(null);
 		contentPane.add(jtxtNome);
 		jtxtNome.setColumns(10);
 		
 		JTextArea jtextArea = new JTextArea();
-		jtextArea.setBounds(543, 345, 232, 88);
+		jtextArea.setFont(new Font("Arial", Font.PLAIN, 17));
+		jtextArea.setBounds(367, 384, 323, 134);
+		jtextArea.setLineWrap(true);
+		jtextArea.setWrapStyleWord(true);
+		//Limitando o TextArea para 200 caracters
+		((AbstractDocument) jtextArea.getDocument()).setDocumentFilter(new CharacterLimitFilter(200));
 		contentPane.add(jtextArea);
 		
 		JLabel jlabelNome = new JLabel("Nome:");
-		jlabelNome.setFont(new Font("Arial", Font.BOLD, 12));
-		jlabelNome.setBounds(543, 250, 36, 14);
+		jlabelNome.setFont(new Font("Arial", Font.BOLD, 18));
+		jlabelNome.setBounds(367, 296, 67, 19);
 		contentPane.add(jlabelNome);
 		
 		JLabel jlabelDescricao = new JLabel("Descrição:");
-		jlabelDescricao.setFont(new Font("Arial", Font.BOLD, 12));
-		jlabelDescricao.setBounds(543, 320, 62, 14);
+		jlabelDescricao.setFont(new Font("Arial", Font.BOLD, 18));
+		jlabelDescricao.setBounds(367, 359, 103, 19);
 		contentPane.add(jlabelDescricao);
 		
 		JButton jbtnTelaListarCategoria = new JButton("Listar Catgoiras");
+		jbtnTelaListarCategoria.setFont(new Font("Arial Black", Font.PLAIN, 25));
 		jbtnTelaListarCategoria.setBackground(new Color(192, 192, 192));
 		jbtnTelaListarCategoria.setFocusPainted(false);
 		jbtnTelaListarCategoria.setBorder(null);
-		jbtnTelaListarCategoria.setBounds(1134, 274, 156, 67);
+		jbtnTelaListarCategoria.setBounds(737, 552, 323, 80);
 		contentPane.add(jbtnTelaListarCategoria);
 		jbtnTelaListarCategoria.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -124,8 +137,9 @@ public class CategoryCreateView extends JFrame {
 		});
 		
 		JButton jbtnCadastrarCategoria = new JButton("Cadastrar");
+		jbtnCadastrarCategoria.setFont(new Font("Arial Black", Font.PLAIN, 25));
 		jbtnCadastrarCategoria.setBackground(new Color(192, 192, 192));
-		jbtnCadastrarCategoria.setBounds(570, 458, 185, 32);
+		jbtnCadastrarCategoria.setBounds(367, 552, 323, 80);
 		jbtnCadastrarCategoria.setFocusPainted(false);
 		jbtnCadastrarCategoria.setBorder(null);
 		contentPane.add(jbtnCadastrarCategoria);

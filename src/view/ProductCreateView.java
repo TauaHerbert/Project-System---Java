@@ -93,23 +93,26 @@ public class ProductCreateView extends JFrame {
 		contentPane.add(jbtnExit);
 		
 		lblNewLabel = new JLabel("Cadastro de Produtos");
-		lblNewLabel.setFont(new Font("Arial", Font.BOLD, 25));
-		lblNewLabel.setBounds(340, 58, 299, 32);
+		lblNewLabel.setFont(new Font("Arial Black", Font.PLAIN, 30));
+		lblNewLabel.setBounds(463, 58, 368, 32);
 		lblNewLabel.setBackground(new Color(240, 240, 240));
 		contentPane.add(lblNewLabel);
 		
 		jtxtNome = new JTextField();
-		jtxtNome.setBounds(340, 164, 267, 20);
+		jtxtNome.setFont(new Font("Arial", Font.PLAIN, 17));
+		jtxtNome.setBounds(547, 139, 267, 30);
 		contentPane.add(jtxtNome);
 		jtxtNome.setColumns(10);
 		
 		jtxtPreco = new JTextField();
-		jtxtPreco.setBounds(340, 380, 78, 20);
+		jtxtPreco.setFont(new Font("Arial", Font.PLAIN, 17));
+		jtxtPreco.setBounds(584, 369, 98, 30);
 		contentPane.add(jtxtPreco);
 		jtxtPreco.setColumns(10);
 		
 		jtxtAreaDescri = new JTextArea();
-		jtxtAreaDescri.setBounds(340, 220, 267, 132);
+		jtxtAreaDescri.setFont(new Font("Arial", Font.PLAIN, 17));
+		jtxtAreaDescri.setBounds(478, 220, 336, 138);
 		jtxtAreaDescri.setLineWrap(true);
 		jtxtAreaDescri.setWrapStyleWord(true);
 		//Limitando o TextArea para 200 caracters
@@ -118,35 +121,42 @@ public class ProductCreateView extends JFrame {
 		
 		//Trazendo os nomes das caegorias junto com o id para o combobox
 		jcmbCategoria = new JComboBox<>();
-		jcmbCategoria.setBounds(340, 432, 267, 22);
+		jcmbCategoria.setFont(new Font("Arial", Font.BOLD | Font.ITALIC, 17));
+		jcmbCategoria.setBounds(478, 441, 267, 30);
 		contentPane.add(jcmbCategoria);
 		ItemCategory.comboCategorias(jcmbCategoria);
 		
 		jlblNome = new JLabel("Nome:");
-		jlblNome.setBounds(340, 145, 46, 14);
+		jlblNome.setFont(new Font("Arial", Font.BOLD, 18));
+		jlblNome.setBounds(478, 145, 59, 14);
 		contentPane.add(jlblNome);
 		
 		jlblDescricao = new JLabel("Descrição:");
-		jlblDescricao.setBounds(340, 195, 78, 14);
+		jlblDescricao.setFont(new Font("Arial", Font.BOLD, 18));
+		jlblDescricao.setBounds(478, 195, 99, 14);
 		contentPane.add(jlblDescricao);
 		
 		jlblPreco = new JLabel("Preço R$:");
-		jlblPreco.setBounds(340, 363, 67, 14);
+		jlblPreco.setFont(new Font("Arial", Font.BOLD, 18));
+		jlblPreco.setBounds(478, 376, 96, 14);
 		contentPane.add(jlblPreco);
 		
 		jlblCategoria = new JLabel("Selecione a categoria:");
-		jlblCategoria.setBounds(340, 411, 137, 14);
+		jlblCategoria.setFont(new Font("Arial", Font.BOLD, 18));
+		jlblCategoria.setBounds(475, 416, 207, 14);
 		contentPane.add(jlblCategoria);
 		
 		btnCadatrarProduto = new JButton("Cadastrar Produto");
+		btnCadatrarProduto.setFont(new Font("Arial Black", Font.PLAIN, 25));
 		btnCadatrarProduto.setBackground(new Color(192, 192, 192));
-		btnCadatrarProduto.setBounds(340, 478, 267, 32);
+		btnCadatrarProduto.setBounds(478, 502, 279, 80);
 		btnCadatrarProduto.setFocusPainted(false);
 		btnCadatrarProduto.setBorder(null);
 		contentPane.add(btnCadatrarProduto);
 		
 		jbtnListarProdu = new JButton("Listar Produtos");
-		jbtnListarProdu.setBounds(1153, 164, 137, 56);
+		jbtnListarProdu.setFont(new Font("Arial Black", Font.PLAIN, 25));
+		jbtnListarProdu.setBounds(811, 502, 279, 80);
 		contentPane.add(jbtnListarProdu);
 		
 		addComponentListener(new ComponentAdapter() {

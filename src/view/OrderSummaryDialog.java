@@ -89,11 +89,11 @@ public class OrderSummaryDialog extends JDialog {
 	
 	public static void main(String[] args) {
 		try {
-			OrderSummaryDialog dialog = new OrderSummaryDialog();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
+				OrderSummaryDialog dialog = new OrderSummaryDialog();
+				dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+				dialog.setVisible(true);
 		} catch (Exception e) {
-			e.printStackTrace();
+				e.printStackTrace();
 		}
 	}
 

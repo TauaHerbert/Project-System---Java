@@ -14,6 +14,8 @@ import modelsLibrary.User;
 
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
 
@@ -21,6 +23,9 @@ import java.util.HexFormat;
 import java.security.MessageDigest;
 import javax.swing.JPasswordField;
 import javax.swing.JLabel;
+import java.awt.Font;
+import javax.swing.SwingConstants;
+import javax.swing.JCheckBox;
 
 public class SystemStartView extends JFrame {
 
@@ -39,6 +44,9 @@ public class SystemStartView extends JFrame {
 	private JLabel jlblNewLabelSenha;
 	
 	private JTextField jtextFieldLogin;
+	private JLabel jlblCadastrar;
+	
+	private JCheckBox jchckbxVer;
 
 	/**Iniciando a tela
 	 * 
@@ -58,7 +66,7 @@ public class SystemStartView extends JFrame {
 	}
 
 	/**
-	 * Carregando a tela e os seus components e ações
+	 * Carregando a tela e os seus components e ações.
 	 */
 	public SystemStartView() {
 		initComponents();
@@ -67,6 +75,7 @@ public class SystemStartView extends JFrame {
 	
 	/**
 	 * Construção da tela e seus components
+	 * botão, caixas de textos e label(s).
 	 */
 	public void initComponents() {
 		setType(Type.UTILITY);
@@ -85,7 +94,7 @@ public class SystemStartView extends JFrame {
 		contentPane.setLayout(null);
 		
 		jbtnIniciar = new JButton("Iniciar");
-		jbtnIniciar.setBounds(197, 200, 132, 71);
+		jbtnIniciar.setBounds(197, 200, 145, 71);
 		contentPane.add(jbtnIniciar);
 		
 		jbtnExit = new JButton("Encerrar");
@@ -97,12 +106,12 @@ public class SystemStartView extends JFrame {
 		
 		jtextFieldLogin = new JTextField();
 		jtextFieldLogin.setToolTipText("");
-		jtextFieldLogin.setBounds(197, 80, 132, 20);
+		jtextFieldLogin.setBounds(197, 80, 145, 20);
 		contentPane.add(jtextFieldLogin);
 		jtextFieldLogin.setColumns(10);
 		
 		jpasswordFieldSenha = new JPasswordField();
-		jpasswordFieldSenha.setBounds(197, 142, 132, 20);
+		jpasswordFieldSenha.setBounds(197, 142, 145, 20);
 		contentPane.add(jpasswordFieldSenha);
 		
 		jlblNewLabelLogin = new JLabel("Login:");
@@ -113,22 +122,57 @@ public class SystemStartView extends JFrame {
 		jlblNewLabelSenha.setBounds(197, 124, 46, 14);
 		contentPane.add(jlblNewLabelSenha);
 		
+		jlblCadastrar = new JLabel("Cadastrar novo Usuario");
+		jlblCadastrar.setHorizontalAlignment(SwingConstants.CENTER);
+		jlblCadastrar.setFont(new Font("Verdana", Font.PLAIN, 10));
+		jlblCadastrar.setForeground(Color.BLUE);
+		jlblCadastrar.setBounds(197, 282, 145, 14);
+		contentPane.add(jlblCadastrar);
+		
+		jchckbxVer = new JCheckBox("Ver");
+		jchckbxVer.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		jchckbxVer.setBounds(348, 141, 46, 23);
+		contentPane.add(jchckbxVer);
+		
 		
 	}
 	
 	/**
-	 * Metodo criado para a ação dos botões da tela (Listeners)
+	 * Metodo criado para a ação dos botões, labele checkbox da tela (Listeners).
 	 */
 	public void actionButtons() {
 		
-		// Encerra a execução do sistema ao clicar em Sair
+		//Veriricação da senha, checkbox selecionado a senha fica vísivel.
+		jchckbxVer.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (jchckbxVer.isSelected()) {
+					jpasswordFieldSenha.setEchoChar((char) 0);
+				}else {
+					jpasswordFieldSenha.setEchoChar('\u2022');
+				}
+				
+			}
+		});
+		
+		//Chama a tela de cadastrar Usuario.
+		jlblCadastrar.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				UserCreateDialog user = new UserCreateDialog();
+				user.setVisible(true);
+			}
+		});
+		
+		// Encerra a execução do sistema ao clicar em Sair.
 		jbtnExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.exit(0);
 			}
 		});
 		
-		//Botão para verificação do login. Verificar se o usuario esta correto e em seguida liberar o acesso para a tela inicial do sistema.
+		//Botão para verificação do login. Verificar se o usuario esta correto 
+		//e em seguida liberar o acesso para a tela inicial do sistema.
 		jbtnIniciar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -139,7 +183,7 @@ public class SystemStartView extends JFrame {
 				if (usuario.getLogin().equals("system") && usuario.getSenha().equals("system")) {
 					
 				try {
-					//Contrução teste para a criação de criptografia para a senha do usuario
+					//Contrução teste para a criação de criptografia para a senha do usuario.
 					MessageDigest codi = MessageDigest.getInstance("SHA-256");
 					byte[] hashBytes = codi.digest(usuario.getSenha().getBytes());
 					String protecao = HexFormat.of().formatHex(hashBytes);
@@ -150,7 +194,8 @@ public class SystemStartView extends JFrame {
 						JOptionPane.showMessageDialog(null,"Erro no main. Erro: "+ex);
 				}
 				
-				//Menssagem de acesso liberado e em seguida construção da tela principal e fechamento da tela de login
+				//Menssagem de acesso liberado e em seguida construção da tela principal 
+				//e fechamento da tela de login.
 				MessageBox.messageShow("Acesso ao sistema autorizado");
 				MainView tlPrincipal = new MainView();
 				tlPrincipal.setVisible(true);

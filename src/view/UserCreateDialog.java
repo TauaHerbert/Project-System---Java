@@ -4,7 +4,9 @@ import java.awt.Color;
 
 import javax.swing.JDialog;
 
+import Utils.HashSecurity;
 import Utils.MessageBox;
+import daoLibrary.UserDAO;
 import modelsLibrary.User;
 
 import javax.swing.BorderFactory;
@@ -14,6 +16,8 @@ import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JCheckBox;
 
 public class UserCreateDialog extends JDialog {
 
@@ -29,6 +33,8 @@ public class UserCreateDialog extends JDialog {
 	private JLabel jlblSenha;
 	private JLabel jlblSenhaMaster;
 	private JButton jbtnCadastrar;
+	private JCheckBox jchckbxSenha;
+	private JCheckBox jchckbxSenhaMaster;
 	
 	/**Iniciando a tela
 	 * 
@@ -97,23 +103,69 @@ public class UserCreateDialog extends JDialog {
 		jbtnCadastrar = new JButton("Cadastrar Novo Usuario");
 		jbtnCadastrar.setBounds(150, 269, 163, 40);
 		getContentPane().add(jbtnCadastrar);
+		
+		jchckbxSenha = new JCheckBox("Ver");
+		jchckbxSenha.setBounds(315, 149, 46, 23);
+		getContentPane().add(jchckbxSenha);
+		
+		jchckbxSenhaMaster = new JCheckBox("Ver");
+		jchckbxSenhaMaster.setBounds(315, 221, 46, 23);
+		getContentPane().add(jchckbxSenhaMaster);
 	}
 	
 	/**
 	 * Metodo criado para a ação dos botões da tela (Listeners)
 	 */
 	public void actionButtons() {
-
+		
+		//Veriricação da senha Usuario, checkbox selecionado a senha fica vísivel.
+		jchckbxSenha.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (jchckbxSenha.isSelected()) {
+					jpasswordSenha.setEchoChar((char) 0);
+				}else {
+					jpasswordSenha.setEchoChar('\u2022');
+				}
+			}
+		});
+				
+		//Veriricação da senha Master, checkbox selecionado a senha fica vísivel.
+		jchckbxSenhaMaster.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (jchckbxSenhaMaster.isSelected()) {
+					jpasswordSenhaMaster.setEchoChar((char) 0);
+				}else {
+					jpasswordSenhaMaster.setEchoChar('\u2022');
+				}
+			}
+		});
+				
 		//Botão para cadastrar Usuario.
+		//Cadastroo do úsuario com criptografia Hash da senha.
 		jbtnCadastrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				User user = new User();
+				UserDAO userDao = new UserDAO();
 				
 				user.setLogin(jtxtLogin.getText());
-				user.setSenha(new String(jpasswordSenha.getPassword()));
+				String senhaLogin = HashSecurity.senhaCriptografada(new String(jpasswordSenha.getPassword()));
+				user.setSenha(senhaLogin);
 				
-				MessageBox.messageShow("Novo Úsuario cadastrado com sucesso!");
-				dispose();
+				String senhaMaster = HashSecurity.senhaCriptografada(new String (jpasswordSenhaMaster.getPassword()));
+				
+				if (userDao.validarSenhaMaster(senhaMaster)) {
+					
+					JOptionPane.showMessageDialog(null,"Senha: "+user.getSenha());
+					userDao.insertUser(user);
+					MessageBox.messageShow("Novo Úsuario cadastrado com sucesso!");
+					dispose();
+					
+				}else {
+					MessageBox.messageShow("Senha Master incorreta!");
+				}
+				
 			}
 		});
 

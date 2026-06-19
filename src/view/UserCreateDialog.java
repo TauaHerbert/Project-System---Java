@@ -146,25 +146,33 @@ public class UserCreateDialog extends JDialog {
 		//Cadastroo do úsuario com criptografia Hash da senha.
 		jbtnCadastrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				User user = new User();
-				UserDAO userDao = new UserDAO();
 				
-				user.setLogin(jtxtLogin.getText());
-				String senhaLogin = HashSecurity.senhaCriptografada(new String(jpasswordSenha.getPassword()));
-				user.setSenha(senhaLogin);
-				
-				String senhaMaster = HashSecurity.senhaCriptografada(new String (jpasswordSenhaMaster.getPassword()));
-				
-				if (userDao.validarSenhaMaster(senhaMaster)) {
+				try {
 					
-					JOptionPane.showMessageDialog(null,"Senha: "+user.getSenha());
-					userDao.insertUser(user);
-					MessageBox.messageShow("Novo Úsuario cadastrado com sucesso!");
-					dispose();
+					User user = new User();
+					UserDAO userDao = new UserDAO();
 					
-				}else {
-					MessageBox.messageShow("Senha Master incorreta!");
+					user.setLogin(jtxtLogin.getText());
+					String senhaLogin = HashSecurity.senhaCriptografada(new String(jpasswordSenha.getPassword()));
+					user.setSenha(senhaLogin);
+					
+					String senhaMaster = HashSecurity.senhaCriptografada(new String (jpasswordSenhaMaster.getPassword()));
+					
+					if (userDao.validarSenhaMaster(senhaMaster)) {
+						
+						JOptionPane.showMessageDialog(null,"Senha: "+user.getSenha());
+						userDao.insertUser(user);
+						MessageBox.messageShow("Novo Úsuario cadastrado com sucesso!");
+						dispose();
+						
+					}else {
+						MessageBox.messageShow("Senha Master incorreta!");
+					}
+				} catch (Exception e2) {
+					//Disparo de exceção caso o sistema não esteja conectado com o banco de dados
+					MessageBox.messageShow(e2.getMessage());
 				}
+				
 				
 			}
 		});

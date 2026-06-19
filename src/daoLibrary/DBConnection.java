@@ -1,19 +1,63 @@
 package daoLibrary;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Properties;
 
+/**
+ * Gerenciador de conexões com o banco de dados da aplicação.
+ * * @author Tauã Herbert
+ */
 public class DBConnection {
+	
 	/**
 	 * Constantes de configuração do JDBC Driver para o MySQL.
 	 */
 	public static final String DRIVER = "com.mysql.cj.jdbc.Driver";
 	public static final String URL = "jdbc:mysql://localhost:3306/banco_test";
-	public static final String USER = "root";
-	public static final String PASS = "t@uaxddemysql1997";
+	public static final String USER = "";
+	public static final String PASS = "";
+	
+	
+	/**
+     * Carrega as propriedades de configuração do banco de dados a partir
+     * do arquivo externo 'config.properties' localizado na raiz do projeto.
+     * * @return Um objeto {@link Properties} contendo as chaves e valores lidos.
+     * @throws RuntimeException Se o arquivo não for encontrado ou ocorrer erro de leitura.
+     */
+	private static Properties loadProperties() {
+        try (FileInputStream fs = new FileInputStream("config.properties")) {
+            Properties props = new Properties();
+            props.load(fs);
+            return props;
+        } catch (IOException e) {
+            throw new RuntimeException("Erro ao carregar o arquivo config.properties: " + e.getMessage());
+        }
+    }
+	
+	/**
+     * Estabelece uma conexão ativa com o banco de dados MySQL utilizando
+     * os parâmetros dinâmicos carregados do arquivo de propriedades.
+     * * @return Uma instância de {@link Connection} pronta para uso.
+     * @throws RuntimeException Se houver falha de autenticação ou erro no driver de rede do banco.
+     */
+	public static Connection getConnection() {
+        try {
+            Properties props = loadProperties();
+            String url = props.getProperty("db.url");
+            String user = props.getProperty("db.user");
+            String pass = props.getProperty("db.password");
+            
+            return DriverManager.getConnection(url, user, pass);
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao conectar ao banco de dados: " + e.getMessage());
+        }
+    }
 	
 	/**
 	 * Gera a conexão com o banco de dados utilizando os parâmetros configurados.
@@ -21,7 +65,7 @@ public class DBConnection {
 	 * @throws SQLException - Lançada caso as credenciais (USER/PASS) ou a URL estejam incorretas.
 	 * @throws ClassNotFoundException - Lançada caso o Driver JDBC não seja encontrado no projeto.
 	 */
-	public static Connection getConnection() throws SQLException{
+	/*public static Connection getConnection() throws SQLException{
 		try {
 			Class.forName(DRIVER);
 			return DriverManager.getConnection(URL, USER, PASS);
@@ -31,7 +75,8 @@ public class DBConnection {
 		} catch (Exception ex) {
 			throw new RuntimeException("Erro de conexão com o banco de dados: "+ex.getMessage(), ex);
 		}
-	}
+	}*/
+	
 	
 	/**
 	 * Realiza o fechamento seguro da conexão com o banco de dados.
